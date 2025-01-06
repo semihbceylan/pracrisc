@@ -111,7 +111,7 @@ class RISC_Simulator_GUI:
         formatted_memory = []
         for addr, value in self.simulator.memory.items():
             binary_value = self.decimal_to_binary(value)  # Convert to binary
-            formatted_memory.append(f"{addr:5}: {value:10} (0b{binary_value})")
+            formatted_memory.append(f"{addr}: {value:10} (0b{binary_value})")
         return "\n".join(formatted_memory)
 
     def run_instructions(self):
