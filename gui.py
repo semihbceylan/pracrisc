@@ -314,6 +314,8 @@ class RISC_Simulator_GUI:
             if selected_option == quiz["answer"]:
                 result = f"Question {i + 1}: Correct!\n\n"
                 correct_answers += 1  # Increment score for correct answers
+            elif selected_option == "":  # No option selected
+                result = f"Question {i + 1}: No answer selected.\n\n"
             else:
                 result = f"Question {i + 1}: Incorrect. The correct answer is {quiz['answer']}.\n"
                 result += f"Explanation: {quiz['explanation']}\n\n"
