@@ -63,12 +63,18 @@ class RISC_Simulator_GUI:
         self.instruction_entry = scrolledtext.ScrolledText(self.input_frame, width=50, height=4)
         self.instruction_entry.pack(fill="x", expand=True)
 
+        # Configure a tag for highlighting the current line
+        self.instruction_entry.tag_configure("current_line", background="yellow")
+
         # Buttons
         button_frame = tk.Frame(self.input_frame)
         button_frame.pack(fill="x", pady=5)
 
         self.run_button = tk.Button(button_frame, text="Run Instructions", command=self.run_instructions)
         self.run_button.pack(side="left", padx=5)
+
+        self.step_button = tk.Button(button_frame, text="Step", command=self.step_instruction)
+        self.step_button.pack(side="left", padx=5)
 
         self.reset_button = tk.Button(button_frame, text="Reset", command=self.reset_simulator)
         self.reset_button.pack(side="left", padx=5)
@@ -114,15 +120,66 @@ class RISC_Simulator_GUI:
         return "\n".join(formatted_memory)
 
     def run_instructions(self):
-        """Run the instructions entered by the user."""
+        """Run all instructions entered by the user."""
         code = self.instruction_entry.get(1.0, tk.END).strip()
         if code:
             self.simulator.pc = 0  # Reset the program counter
-            try:
-                self.simulator.run(code)
-                self.update_display()  # Update the display after running instructions
-            except Exception as e:
-                messagebox.showerror("Error", f"An error occurred: {e}")
+            instructions = code.split('\n')
+            while not self.simulator.halted and self.simulator.pc < len(instructions):
+                # Remove previous highlight
+                self.instruction_entry.tag_remove("current_line", "1.0", tk.END)
+
+                # Highlight the current line
+                current_line_start = f"{self.simulator.pc + 1}.0"
+                current_line_end = f"{self.simulator.pc + 1}.end"
+                self.instruction_entry.tag_add("current_line", current_line_start, current_line_end)
+
+                # Scroll to the current line
+                self.instruction_entry.see(current_line_start)
+
+                line = instructions[self.simulator.pc].strip()
+                if line:
+                    try:
+                        self.simulator.run_instruction(line)
+                        self.simulator.pc += 1  # Move to the next instruction
+                        self.update_display()
+                        self.root.update()  # Force GUI update to show the highlight
+                    except Exception as e:
+                        messagebox.showerror("Error", f"An error occurred: {e}")
+                        break
+                else:
+                    self.simulator.pc += 1  # Skip empty lines
+
+    def step_instruction(self):
+        """Execute the next instruction and update the display."""
+        code = self.instruction_entry.get(1.0, tk.END).strip()
+        if code:
+            instructions = code.split('\n')
+            if self.simulator.pc < len(instructions):
+                # Remove previous highlight
+                self.instruction_entry.tag_remove("current_line", "1.0", tk.END)
+
+                # Highlight the current line
+                current_line_start = f"{self.simulator.pc + 1}.0"
+                current_line_end = f"{self.simulator.pc + 1}.end"
+                self.instruction_entry.tag_add("current_line", current_line_start, current_line_end)
+
+                # Scroll to the current line
+                self.instruction_entry.see(current_line_start)
+
+                line = instructions[self.simulator.pc].strip()
+                if line:
+                    try:
+                        self.simulator.run_instruction(line)
+                        self.simulator.pc += 1  # Move to the next instruction
+                        self.update_display()
+                        self.root.update()  # Force GUI update to show the highlight
+                    except Exception as e:
+                        messagebox.showerror("Error", f"An error occurred: {e}")
+                else:
+                    self.simulator.pc += 1  # Skip empty lines
+            else:
+                messagebox.showinfo("Info", "All instructions have been executed.")
 
     def create_lessons_tab(self):
         """Create the lessons tab."""
@@ -238,7 +295,7 @@ class RISC_Simulator_GUI:
             self.user_answers[i] = option_var
 
     def show_results(self):
-        """Show the results in a pop-up window."""
+        """Show the results in a pop-up window with a final score."""
         # Create a new Toplevel window for results
         results_window = tk.Toplevel(self.root)
         results_window.title("Quiz Results")
@@ -248,17 +305,26 @@ class RISC_Simulator_GUI:
         results_text = scrolledtext.ScrolledText(results_window, width=80, height=30, state="normal")
         results_text.pack(fill="both", expand=True, padx=10, pady=10)
 
+        # Initialize score counter
+        correct_answers = 0
+
         # Check each question and display results
         for i, quiz in enumerate(QUIZZES):
             selected_option = self.user_answers[i].get()
             if selected_option == quiz["answer"]:
                 result = f"Question {i + 1}: Correct!\n\n"
-            elif selected_option == "":
-                result = f"Question {i + 1}: No answer selected.\n\n"
+                correct_answers += 1  # Increment score for correct answers
             else:
                 result = f"Question {i + 1}: Incorrect. The correct answer is {quiz['answer']}.\n"
                 result += f"Explanation: {quiz['explanation']}\n\n"
             results_text.insert(tk.END, result)
+
+        # Calculate final score
+        total_questions = len(QUIZZES)
+        final_score = (correct_answers / total_questions) * 100  # Calculate percentage
+
+        # Display final score
+        results_text.insert(tk.END, f"\nFinal Score: {final_score:.2f}% ({correct_answers}/{total_questions})\n")
 
         # Disable editing of the results text
         results_text.config(state="disabled")
