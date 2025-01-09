@@ -19,7 +19,6 @@ class RISC_Simulator_GUI:
         self.create_simulator_tab()
         self.create_lessons_tab()
         self.create_quizzes_tab()
-        self.create_answers_tab()  # Add the Answers tab
 
         # Initialize the display
         self.update_display()
@@ -152,65 +151,121 @@ class RISC_Simulator_GUI:
             lesson = LESSONS[selected_index[0]]
             self.lesson_content.config(state="normal")
             self.lesson_content.delete(1.0, tk.END)
-            self.lesson_content.insert(tk.END, lesson["content"])
+            self.lesson_content.insert(tk.END, lesson["content"].strip())  # Use .strip() to remove leading/trailing whitespace
             self.lesson_content.config(state="disabled")
 
     def create_quizzes_tab(self):
-        """Create the quizzes tab."""
+        """Create the quizzes tab with a scrollable frame for questions."""
         self.quizzes_tab = ttk.Frame(self.notebook)
         self.notebook.add(self.quizzes_tab, text="Quizzes")
 
-        # Quiz list
-        self.quiz_listbox = tk.Listbox(self.quizzes_tab, width=50, height=15)
-        self.quiz_listbox.pack(fill="both", expand=True, padx=10, pady=10)
+        # Create a canvas for the questions frame
+        self.quiz_canvas = tk.Canvas(self.quizzes_tab)
+        self.quiz_canvas.pack(side="left", fill="both", expand=True)
 
-        # Populate the quiz list
+        # Add a scrollbar but keep it hidden
+        self.quiz_scrollbar = ttk.Scrollbar(self.quizzes_tab, orient="vertical", command=self.quiz_canvas.yview)
+        self.quiz_scrollbar.pack(side="right", fill="y")
+
+        # Configure the canvas to work with the scrollbar
+        self.quiz_canvas.configure(yscrollcommand=self.quiz_scrollbar.set)
+        self.quiz_canvas.bind(
+            "<Configure>",
+            lambda e: self.quiz_canvas.configure(scrollregion=self.quiz_canvas.bbox("all"))
+        )
+
+        # Frame for questions
+        self.questions_frame = tk.Frame(self.quiz_canvas)
+        self.quiz_canvas.create_window((0, 0), window=self.questions_frame, anchor="nw")
+
+        # Bind mouse wheel scrolling to the canvas
+        self.questions_frame.bind(
+            "<Enter>",
+            lambda event: self.quiz_canvas.bind_all("<MouseWheel>", self.on_mousewheel)
+        )
+        self.questions_frame.bind(
+            "<Leave>",
+            lambda event: self.quiz_canvas.unbind_all("<MouseWheel>")
+        )
+
+        # Dictionary to store user answers
+        self.user_answers = {}
+
+        # Load all questions
+        self.load_all_questions()
+
+        # Submit button
+        self.submit_button = tk.Button(self.quizzes_tab, text="Submit", command=self.show_results)
+        self.submit_button.pack(pady=10)
+
+    def on_mousewheel(self, event):
+        """Handle mouse wheel scrolling for the canvas."""
+        self.quiz_canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+    def load_all_questions(self):
+        """Load all questions and options into the scrollable frame."""
         for i, quiz in enumerate(QUIZZES):
-            self.quiz_listbox.insert(tk.END, f"{i + 1}. {quiz['question']}")
+            # Create a frame for each question to hold the question label and options
+            question_frame = tk.Frame(self.questions_frame)
+            question_frame.pack(fill="x", pady=(10, 0), anchor="w")
 
-        # Quiz content display
-        self.quiz_content = scrolledtext.ScrolledText(self.quizzes_tab, width=50, height=15, state="disabled")
-        self.quiz_content.pack(fill="both", expand=True, padx=10, pady=10)
+            # Question label with text wrapping
+            question_label = tk.Label(
+                question_frame,
+                text=f"{i + 1}. {quiz['question']}",
+                font=("Arial", 12, "bold"),
+                wraplength=800,  # Adjust this value based on your frame width
+                justify="left",
+                anchor="w"
+            )
+            question_label.pack(fill="x", anchor="w", pady=(0, 5))  # Fill the width and align left
 
-        # Bind quiz selection to display content
-        self.quiz_listbox.bind("<<ListboxSelect>>", self.display_quiz_content)
-
-    def display_quiz_content(self, event):
-        """Display the content of the selected quiz."""
-        selected_index = self.quiz_listbox.curselection()
-        if selected_index:
-            quiz = QUIZZES[selected_index[0]]
-            self.quiz_content.config(state="normal")
-            self.quiz_content.delete(1.0, tk.END)
-            self.quiz_content.insert(tk.END, f"{quiz['question']}\n\nOptions:\n")
+            # Radio buttons for options
+            option_var = tk.StringVar()
             for option in quiz["options"]:
-                self.quiz_content.insert(tk.END, f"{option}\n")
-            self.quiz_content.config(state="disabled")
+                rb = tk.Radiobutton(
+                    question_frame,
+                    text=option,
+                    variable=option_var,
+                    value=option[0],
+                    wraplength=800,  # Adjust this value based on your frame width
+                    justify="left",
+                    anchor="w"
+                )
+                rb.pack(fill="x", anchor="w")  # Fill the width and align left
 
-    def create_answers_tab(self):
-        """Create the answers tab."""
-        self.answers_tab = ttk.Frame(self.notebook)
-        self.notebook.add(self.answers_tab, text="Answers")
+            # Store the variable for later use
+            self.user_answers[i] = option_var
 
-        # Answers content display
-        self.answers_content = scrolledtext.ScrolledText(self.answers_tab, width=60, height=20, state="normal")
-        self.answers_content.pack(fill="both", expand=True, padx=10, pady=10)
+    def show_results(self):
+        """Show the results in a pop-up window."""
+        # Create a new Toplevel window for results
+        results_window = tk.Toplevel(self.root)
+        results_window.title("Quiz Results")
+        results_window.geometry("800x600")  # Adjust size as needed
 
-        # Populate the answers content
-        self.display_all_answers()
+        # Create a scrollable text area for results
+        results_text = scrolledtext.ScrolledText(results_window, width=80, height=30, state="normal")
+        results_text.pack(fill="both", expand=True, padx=10, pady=10)
 
-    def display_all_answers(self):
-        """Display all quiz questions, answers, and explanations."""
-        self.answers_content.delete(1.0, tk.END)  # Clear existing content
+        # Check each question and display results
         for i, quiz in enumerate(QUIZZES):
-            self.answers_content.insert(tk.END, f"Question {i + 1}:\n")
-            self.answers_content.insert(tk.END, f"  Question: {quiz['question']}\n")
-            self.answers_content.insert(tk.END, f"  Answer: {quiz['answer']}\n")
-            if "explanation" in quiz:
-                self.answers_content.insert(tk.END, f"  Explanation: {quiz['explanation']}\n\n")
+            selected_option = self.user_answers[i].get()
+            if selected_option == quiz["answer"]:
+                result = f"Question {i + 1}: Correct!\n\n"
+            elif selected_option == "":
+                result = f"Question {i + 1}: No answer selected.\n\n"
             else:
-                self.answers_content.insert(tk.END, "\n")
-        self.answers_content.config(state="disabled")  # Make the text read-only
+                result = f"Question {i + 1}: Incorrect. The correct answer is {quiz['answer']}.\n"
+                result += f"Explanation: {quiz['explanation']}\n\n"
+            results_text.insert(tk.END, result)
+
+        # Disable editing of the results text
+        results_text.config(state="disabled")
+
+        # Add a close button
+        close_button = tk.Button(results_window, text="Close", command=results_window.destroy)
+        close_button.pack(pady=10)
 
 if __name__ == "__main__":
     root = tk.Tk()
