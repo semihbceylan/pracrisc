@@ -1,4 +1,4 @@
-QUIZZES = [
+[
     {
         "question": "Which of the following is not a component of Von Neumann architecture?",
         "options": ["A. Control Unit", "B. Arithmetic Logic Unit (ALU)", "C. Cache Memory", "D. Registers"],

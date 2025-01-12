@@ -1,15 +1,29 @@
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
+import json
 from simulator import RISC_Simulator
-from lessons import LESSONS
-from quizzes import QUIZZES
+
+
+def load_json_file(filename):
+    """Load JSON data from a file."""
+    try:
+        with open(filename, 'r') as file:
+            return json.load(file)
+    except Exception as e:
+        messagebox.showerror("Error", f"Failed to load {filename}: {e}")
+        return []
+
 
 class RISC_Simulator_GUI:
     def __init__(self, root):
         self.root = root
         self.root.title("RISC Simulator")
+        self.set_application_logo("risc.png")
         self.root.geometry("800x600")
         self.simulator = RISC_Simulator()
+        # Load lessons and quizzes from JSON files
+        self.LESSONS = load_json_file("lessons.json")
+        self.QUIZZES = load_json_file("quizzes.json")
 
         # Create a notebook (tabbed interface)
         self.notebook = ttk.Notebook(self.root)
@@ -22,6 +36,16 @@ class RISC_Simulator_GUI:
 
         # Initialize the display
         self.update_display()
+
+
+    def set_application_logo(self, logo_path):
+        """Set the application logo from a given file path."""
+        try:
+            # Use a PhotoImage object to set the icon
+            icon = tk.PhotoImage(file=logo_path)
+            self.root.iconphoto(False, icon)
+        except Exception as e:
+            print(f"Error setting logo: {e}")
 
     def decimal_to_binary(self, value, bits=32):
         """Convert a decimal value to a binary string with a fixed number of bits."""
@@ -191,7 +215,7 @@ class RISC_Simulator_GUI:
         self.lesson_listbox.pack(fill="both", expand=True, padx=10, pady=10)
 
         # Populate the lesson list
-        for i, lesson in enumerate(LESSONS):
+        for i, lesson in enumerate(self.LESSONS):
             self.lesson_listbox.insert(tk.END, f"{i + 1}. {lesson['title']}")
 
         # Lesson content display
@@ -205,7 +229,7 @@ class RISC_Simulator_GUI:
         """Display the content of the selected lesson."""
         selected_index = self.lesson_listbox.curselection()
         if selected_index:
-            lesson = LESSONS[selected_index[0]]
+            lesson = self.LESSONS[selected_index[0]]
             self.lesson_content.config(state="normal")
             self.lesson_content.delete(1.0, tk.END)
             self.lesson_content.insert(tk.END, lesson["content"].strip())  # Use .strip() to remove leading/trailing whitespace
@@ -261,7 +285,7 @@ class RISC_Simulator_GUI:
 
     def load_all_questions(self):
         """Load all questions and options into the scrollable frame."""
-        for i, quiz in enumerate(QUIZZES):
+        for i, quiz in enumerate(self.QUIZZES):
             # Create a frame for each question to hold the question label and options
             question_frame = tk.Frame(self.questions_frame)
             question_frame.pack(fill="x", pady=(10, 0), anchor="w")
@@ -309,7 +333,7 @@ class RISC_Simulator_GUI:
         correct_answers = 0
 
         # Check each question and display results
-        for i, quiz in enumerate(QUIZZES):
+        for i, quiz in enumerate(self.QUIZZES):
             selected_option = self.user_answers[i].get()
             if selected_option == quiz["answer"]:
                 result = f"Question {i + 1}: Correct!\n\n"
@@ -322,7 +346,7 @@ class RISC_Simulator_GUI:
             results_text.insert(tk.END, result)
 
         # Calculate final score
-        total_questions = len(QUIZZES)
+        total_questions = len(self.QUIZZES)
         final_score = (correct_answers / total_questions) * 100  # Calculate percentage
 
         # Display final score
