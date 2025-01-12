@@ -1,86 +1,86 @@
 [
     {
         "title": "Introduction to RISC",
-        "content": "RISC (Reduced Instruction Set Computer) is a type of microprocessor architecture\\n that uses a small, highly optimized set of instructions. Key features of RISC include:\\n- Simple instructions that execute in one clock cycle. \\n- A large number of registers.\\n- Load/store architecture (only load and store instructions access memory).\\n"
+        "content": "RISC (Reduced Instruction Set Computer) is a type of microprocessor architecture\n that uses a small, highly optimized set of instructions. Key features of RISC include:\n- Simple instructions that execute in one clock cycle. \n- A large number of registers.\n- Load/store architecture (only load and store instructions access memory).\n"
     },
     {
         "title": "Registers and Memory",
-        "content": "The RISC simulator has:\\n- **32 General-Purpose Registers**: R0 to R31.\\n- **Memory**: A dictionary that maps addresses to values.\\nExample:\\n- Registers: R0 = 10, R1 = 20, R2 = 30\\n- Memory: {100: 10, 104: 20, 108: 30}\\n"
+        "content": "The RISC simulator has:\n- **32 General-Purpose Registers**: R0 to R31.\n- **Memory**: A dictionary that maps addresses to values.\nExample:\n- Registers: R0 = 10, R1 = 20, R2 = 30\n- Memory: {100: 10, 104: 20, 108: 30}\n"
     },
     {
         "title": "Arithmetic Instructions",
-        "content": "Arithmetic instructions perform mathematical operations on registers.\\nExamples:\\n- **ADD**: Add two registers (e.g., ADD R1, R2, R3 → R1 = R2 + R3).\\n- **SUB**: Subtract one register from another (e.g., SUB R1, R2, R3 → R1 = R2 - R3).\\n- **MUL**: Multiply two registers (e.g., MUL R1, R2, R3 → R1 = R2 * R3).\\n- **DIV**: Divide one register by another (e.g., DIV R1, R2, R3 → R1 = R2 / R3).\\n"
+        "content": "Arithmetic instructions perform mathematical operations on registers.\nExamples:\n- **ADD**: Add two registers (e.g., ADD R1, R2, R3 → R1 = R2 + R3).\n- **SUB**: Subtract one register from another (e.g., SUB R1, R2, R3 → R1 = R2 - R3).\n- **MUL**: Multiply two registers (e.g., MUL R1, R2, R3 → R1 = R2 * R3).\n- **DIV**: Divide one register by another (e.g., DIV R1, R2, R3 → R1 = R2 / R3).\n"
     },
     {
         "title": "Logical Instructions",
-        "content": "Logical instructions perform bitwise operations on registers.\\nExamples:\\n- **AND**: Bitwise AND (e.g., AND R1, R2, R3 → R1 = R2 & R3).\\n- **OR**: Bitwise OR (e.g., OR R1, R2, R3 → R1 = R2 | R3).\\n- **XOR**: Bitwise XOR (e.g., XOR R1, R2, R3 → R1 = R2 ^ R3).\\n- **NOT**: Bitwise NOT (e.g., NOT R1, R2 → R1 = ~R2).\\n"
+        "content": "Logical instructions perform bitwise operations on registers.\nExamples:\n- **AND**: Bitwise AND (e.g., AND R1, R2, R3 → R1 = R2 & R3).\n- **OR**: Bitwise OR (e.g., OR R1, R2, R3 → R1 = R2 | R3).\n- **XOR**: Bitwise XOR (e.g., XOR R1, R2, R3 → R1 = R2 ^ R3).\n- **NOT**: Bitwise NOT (e.g., NOT R1, R2 → R1 = ~R2).\n"
     },
     {
         "title": "Data Transfer Instructions",
-        "content": "Data transfer instructions move data between registers and memory.\\nExamples:\\n- **LOAD**: Load data from memory into a register (e.g., LOAD R1, 100 → R1 = Memory[100]).\\n- **STORE**: Store data from a register into memory (e.g., STORE R1, 100 → Memory[100] = R1).\\n"
+        "content": "Data transfer instructions move data between registers and memory.\nExamples:\n- **LOAD**: Load data from memory into a register (e.g., LOAD R1, 100 → R1 = Memory[100]).\n- **STORE**: Store data from a register into memory (e.g., STORE R1, 100 → Memory[100] = R1).\n"
     },
     {
         "title": "Control Instructions",
-        "content": "Control instructions change the flow of execution.\\nExamples:\\n- **JUMP**: Jump to a specific instruction (e.g., JUMP 8 → Set PC to 8).\\n- **BEQ**: Branch if two registers are equal (e.g., BEQ R1, R2, 10 → If R1 == R2, jump to instruction 10).\\n- **BNE**: Branch if two registers are not equal (e.g., BNE R1, R2, 10 → If R1 != R2, jump to instruction 10).\\n- **HALT**: Stop execution.\\n"
+        "content": "Control instructions change the flow of execution.\nExamples:\n- **JUMP**: Jump to a specific instruction (e.g., JUMP 8 → Set PC to 8).\n- **BEQ**: Branch if two registers are equal (e.g., BEQ R1, R2, 10 → If R1 == R2, jump to instruction 10).\n- **BNE**: Branch if two registers are not equal (e.g., BNE R1, R2, 10 → If R1 != R2, jump to instruction 10).\n- **HALT**: Stop execution.\n"
     },
     {
         "title": "Shift Instructions",
-        "content": "\\nShift instructions perform bitwise shifts on register values.\\nExamples:\\n- **SLL**: Shift left logical (e.g., SLL R1, R2, 5 → R1 = R2 << 5).\\n- **SRL**: Shift right logical (e.g., SRL R1, R2, 5 → R1 = R2 >> 5).\\n"
+        "content": "\nShift instructions perform bitwise shifts on register values.\nExamples:\n- **SLL**: Shift left logical (e.g., SLL R1, R2, 5 → R1 = R2 << 5).\n- **SRL**: Shift right logical (e.g., SRL R1, R2, 5 → R1 = R2 >> 5).\n"
     },
     {
         "title": "Von Neumann Architecture",
-        "content": "Von Neumann architecture is the foundation of modern computers. It consists of:\\n- **Control Unit (CU)**: Manages instruction execution.\\n- **Arithmetic Logic Unit (ALU)**: Performs arithmetic and logical operations.\\n- **Memory**: Stores data and instructions.\\n- **Input/Output Devices**: Allow interaction with external systems.\\n\\nKey features:\\n- Uses a single bus for data and instructions.\\n- Executes instructions sequentially.\\n"
+        "content": "Von Neumann architecture is the foundation of modern computers. It consists of:\n- **Control Unit (CU)**: Manages instruction execution.\n- **Arithmetic Logic Unit (ALU)**: Performs arithmetic and logical operations.\n- **Memory**: Stores data and instructions.\n- **Input/Output Devices**: Allow interaction with external systems.\n\nKey features:\n- Uses a single bus for data and instructions.\n- Executes instructions sequentially.\n"
     },
     {
         "title": "Memory Hierarchy",
-        "content": "Memory hierarchy organizes storage in a computer system based on speed and cost:\\n1. **Registers**: Fastest and smallest, located inside the CPU.\\n2. **Cache Memory**: Faster than main memory, divided into L1, L2, and L3 caches.\\n3. **Main Memory (RAM)**: Volatile memory used for active processes.\\n4. **Secondary Storage (HDD/SSD)**: Non-volatile memory for long-term storage.\\n\\nThe hierarchy ensures faster access to frequently used data."
+        "content": "Memory hierarchy organizes storage in a computer system based on speed and cost:\n1. **Registers**: Fastest and smallest, located inside the CPU.\n2. **Cache Memory**: Faster than main memory, divided into L1, L2, and L3 caches.\n3. **Main Memory (RAM)**: Volatile memory used for active processes.\n4. **Secondary Storage (HDD/SSD)**: Non-volatile memory for long-term storage.\n\nThe hierarchy ensures faster access to frequently used data."
     },
     {
         "title": "Pipelining",
-        "content": "Pipelining is a technique to improve CPU performance by overlapping instruction execution stages:\\n- **Stages**: Fetch, Decode, Execute, Memory Access, Write Back.\\n- **Advantages**: Increases throughput and efficiency.\\n- **Challenges**: Pipeline hazards (e.g., data hazards, control hazards).\\n\\n\\nExample: A 5-stage pipeline can process multiple instructions simultaneously.\\n"
+        "content": "Pipelining is a technique to improve CPU performance by overlapping instruction execution stages:\n- **Stages**: Fetch, Decode, Execute, Memory Access, Write Back.\n- **Advantages**: Increases throughput and efficiency.\n- **Challenges**: Pipeline hazards (e.g., data hazards, control hazards).\n\n\nExample: A 5-stage pipeline can process multiple instructions simultaneously.\n"
     },
     {
         "title": "Instruction Set Architecture (ISA)",
-        "content": "ISA defines the set of instructions a CPU can execute. Key components:\\n- **Instruction Formats**: Fixed-length or variable-length.\\n- **Addressing Modes**: How operands are specified (e.g., immediate, register, memory).\\n- **Instruction Types**: Arithmetic, logical, control, and data transfer.\\n\\n\\nExamples of ISA:\\n- RISC (Reduced Instruction Set Computer): Simple, fixed-length instructions.\\n- CISC (Complex Instruction Set Computer): Complex, variable-length instructions.\\n"
+        "content": "ISA defines the set of instructions a CPU can execute. Key components:\n- **Instruction Formats**: Fixed-length or variable-length.\n- **Addressing Modes**: How operands are specified (e.g., immediate, register, memory).\n- **Instruction Types**: Arithmetic, logical, control, and data transfer.\n\n\nExamples of ISA:\n- RISC (Reduced Instruction Set Computer): Simple, fixed-length instructions.\n- CISC (Complex Instruction Set Computer): Complex, variable-length instructions.\n"
     },
     {
         "title": "Parallel Processing",
-        "content": "Parallel processing involves executing multiple tasks simultaneously. Types include:\\n- **SIMD (Single Instruction Multiple Data)**: One instruction operates on multiple data points.\\n- **MIMD (Multiple Instruction Multiple Data)**: Multiple processors execute different instructions on different data.\\n\\n\\nApplications: Graphics processing, scientific computing, and machine learning.\\n"
+        "content": "Parallel processing involves executing multiple tasks simultaneously. Types include:\n- **SIMD (Single Instruction Multiple Data)**: One instruction operates on multiple data points.\n- **MIMD (Multiple Instruction Multiple Data)**: Multiple processors execute different instructions on different data.\n\n\nApplications: Graphics processing, scientific computing, and machine learning.\n"
     },
     {
         "title": "Cache Memory",
-        "content": "Cache memory is a small, fast memory layer between the CPU and main memory. Types:\\n- **L1 Cache**: Fastest and smallest, located inside the CPU.\\n- **L2 Cache**: Larger and slower than L1, often shared between cores.\\n- **L3 Cache**: Largest and slowest, shared across all cores.\\n\\nPurpose: Reduces memory access time and improves performance.\\n"
+        "content": "Cache memory is a small, fast memory layer between the CPU and main memory. Types:\n- **L1 Cache**: Fastest and smallest, located inside the CPU.\n- **L2 Cache**: Larger and slower than L1, often shared between cores.\n- **L3 Cache**: Largest and slowest, shared across all cores.\n\nPurpose: Reduces memory access time and improves performance.\n"
     },
     {
         "title": "Virtual Memory",
-        "content": "Virtual memory extends the apparent size of physical memory using disk space. Key concepts:\\n- **Paging**: Divides memory into fixed-size blocks (pages).\\n- **Page Table**: Maps virtual addresses to physical addresses.\\n- **Page Fault**: Occurs when a required page is not in RAM.\\n\\nBenefits: Allows running larger programs and improves memory management.\\n"
+        "content": "Virtual memory extends the apparent size of physical memory using disk space. Key concepts:\n- **Paging**: Divides memory into fixed-size blocks (pages).\n- **Page Table**: Maps virtual addresses to physical addresses.\n- **Page Fault**: Occurs when a required page is not in RAM.\n\nBenefits: Allows running larger programs and improves memory management.\n"
     },
     {
         "title": "Harvard Architecture",
-        "content": "Harvard architecture uses separate memory spaces for data and instructions. Features:\\n- **Separate Buses**: Data and instructions are accessed via different buses.\\n- **Advantages**: Allows simultaneous access to data and instructions, improving performance.\\n- **Disadvantages**: More complex design compared to Von Neumann architecture.\\n\\nCommonly used in embedded systems and DSPs (Digital Signal Processors).\\n"
+        "content": "Harvard architecture uses separate memory spaces for data and instructions. Features:\n- **Separate Buses**: Data and instructions are accessed via different buses.\n- **Advantages**: Allows simultaneous access to data and instructions, improving performance.\n- **Disadvantages**: More complex design compared to Von Neumann architecture.\n\nCommonly used in embedded systems and DSPs (Digital Signal Processors).\n"
     },
     {
         "title": "Control Unit (CU)",
-        "content": "The Control Unit (CU) is a component of the CPU that manages instruction execution. Functions:\\n- **Instruction Fetch**: Retrieves instructions from memory.\\n- **Instruction Decode**: Interprets the instruction.\\n- **Execution Control**: Coordinates data movement and ALU operations.\\n\\nThe CU ensures instructions are executed in the correct sequence.\\n"
+        "content": "The Control Unit (CU) is a component of the CPU that manages instruction execution. Functions:\n- **Instruction Fetch**: Retrieves instructions from memory.\n- **Instruction Decode**: Interprets the instruction.\n- **Execution Control**: Coordinates data movement and ALU operations.\n\nThe CU ensures instructions are executed in the correct sequence.\n"
     },
     {
         "title": "Arithmetic Logic Unit (ALU)",
-        "content": "The ALU performs arithmetic and logical operations. Key operations:\\n- **Arithmetic**: Addition, subtraction, multiplication, division.\\n- **Logical**: AND, OR, NOT, XOR.\\n- **Shift Operations**: Left shift, right shift.\\n\\nThe ALU is a critical component of the CPU, enabling computation and decision-making.\\n"
+        "content": "The ALU performs arithmetic and logical operations. Key operations:\n- **Arithmetic**: Addition, subtraction, multiplication, division.\n- **Logical**: AND, OR, NOT, XOR.\n- **Shift Operations**: Left shift, right shift.\n\nThe ALU is a critical component of the CPU, enabling computation and decision-making.\n"
     },
     {
         "title": "Program Counter (PC)",
-        "content": "The Program Counter (PC) is a register that holds the address of the next instruction to execute. Functions:\\n- **Increment**: Automatically increments after each instruction fetch.\\n- **Jump**: Updated during control instructions (e.g., JUMP, BEQ).\\n\\nThe PC ensures the CPU executes instructions in the correct order.\\n"
+        "content": "The Program Counter (PC) is a register that holds the address of the next instruction to execute. Functions:\n- **Increment**: Automatically increments after each instruction fetch.\n- **Jump**: Updated during control instructions (e.g., JUMP, BEQ).\n\nThe PC ensures the CPU executes instructions in the correct order.\n"
     },
     {
         "title": "Memory Address Register (MAR)",
-        "content": "The Memory Address Register (MAR) holds the address of the memory location being accessed. Functions:\\n- **Read Operations**: Specifies the address to read from.\\n- **Write Operations**: Specifies the address to write to.\\n\\nThe MAR is essential for memory access operations.\\n"
+        "content": "The Memory Address Register (MAR) holds the address of the memory location being accessed. Functions:\n- **Read Operations**: Specifies the address to read from.\n- **Write Operations**: Specifies the address to write to.\n\nThe MAR is essential for memory access operations.\n"
     },
     {
         "title": "Secondary Storage",
-        "content": "Secondary storage devices provide non-volatile, long-term data storage. Examples:\\n- **Hard Disk Drives (HDD)**: Magnetic storage with high capacity.\\n- **Solid-State Drives (SSD)**: Faster and more reliable than HDDs.\\n- **Flash Memory**: Used in USB drives and memory cards.\\n\\nSecondary storage is slower than primary memory but essential for data persistence.\\n"
+        "content": "Secondary storage devices provide non-volatile, long-term data storage. Examples:\n- **Hard Disk Drives (HDD)**: Magnetic storage with high capacity.\n- **Solid-State Drives (SSD)**: Faster and more reliable than HDDs.\n- **Flash Memory**: Used in USB drives and memory cards.\n\nSecondary storage is slower than primary memory but essential for data persistence.\n"
     },
     {
         "title": "CISC vs. RISC",
-        "content": "CISC (Complex Instruction Set Computer) and RISC (Reduced Instruction Set Computer) are two CPU design philosophies:\\n- **CISC**: Emphasizes complex instructions that perform multiple operations. Examples: x86 architecture.\\n- **RISC**: Focuses on simple, fixed-length instructions executed quickly. Examples: ARM, MIPS.\\n\\nComparison:\\n- CISC: Higher code density, more complex hardware.\\n- RISC: Simpler hardware, better performance for specific tasks.\\"
+        "content": "CISC (Complex Instruction Set Computer) and RISC (Reduced Instruction Set Computer) are two CPU design philosophies:\n- **CISC**: Emphasizes complex instructions that perform multiple operations. Examples: x86 architecture.\n- **RISC**: Focuses on simple, fixed-length instructions executed quickly. Examples: ARM, MIPS.\n\nComparison:\n- CISC: Higher code density, more complex hardware.\n- RISC: Simpler hardware, better performance for specific tasks.\n"
     }
 ]
