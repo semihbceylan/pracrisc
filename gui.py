@@ -302,7 +302,7 @@ class RISC_Simulator_GUI:
             question_label.pack(fill="x", anchor="w", pady=(0, 5))  # Fill the width and align left
 
             # Radio buttons for options
-            option_var = tk.StringVar()
+            option_var = tk.StringVar(value="NONE")
             for option in quiz["options"]:
                 rb = tk.Radiobutton(
                     question_frame,
