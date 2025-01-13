@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox, simpledialog
+from tkinter import messagebox
 from tkinter import ttk
 import json
 import os
@@ -13,6 +13,7 @@ class QuizManagerApp:
         self.root = root
         self.root.title("Quiz and Lessons Manager")
         self.set_application_logo("risc.png")
+
         # Create tabs
         self.notebook = ttk.Notebook(self.root)
         self.notebook.pack(fill="both", expand=True)
@@ -27,22 +28,27 @@ class QuizManagerApp:
         self.notebook.add(self.lessons_tab, text="Lessons Manager")
         self.create_lessons_manager_widgets()
 
-        # Load data
+        # Load data once on startup
         self.load_quizzes()
         self.load_lessons()
+
+        # Refresh the listboxes from the in-memory data
+        self.refresh_quiz_listbox()
+        self.refresh_lesson_listbox()
 
     def set_application_logo(self, logo_path):
         """Set the application logo from a given file path."""
         try:
-            # Use a PhotoImage object to set the icon
             icon = tk.PhotoImage(file=logo_path)
             self.root.iconphoto(False, icon)
         except Exception as e:
             print(f"Error setting logo: {e}")
-    
-    # --- Quiz Manager ---
+
+    # =========================
+    #     QUIZ MANAGER
+    # =========================
     def create_quiz_manager_widgets(self):
-        # Question list
+        # Quiz listbox
         self.quiz_listbox = tk.Listbox(self.quiz_tab, height=15, width=100)
         self.quiz_listbox.grid(row=0, column=0, columnspan=4, pady=10, padx=10)
         self.quiz_listbox.bind('<<ListboxSelect>>', self.display_selected_quiz)
@@ -53,7 +59,7 @@ class QuizManagerApp:
         tk.Button(self.quiz_tab, text="Delete Quiz", command=self.delete_quiz).grid(row=1, column=2, pady=5)
         tk.Button(self.quiz_tab, text="Save Changes", command=self.save_quizzes).grid(row=1, column=3, pady=5)
 
-        # Details area
+        # Quiz details area
         self.quiz_details_frame = tk.Frame(self.quiz_tab)
         self.quiz_details_frame.grid(row=2, column=0, columnspan=4, pady=10)
 
@@ -74,11 +80,17 @@ class QuizManagerApp:
         self.explanation_entry.grid(row=3, column=1, pady=5)
 
     def load_quizzes(self):
-        self.quiz_listbox.delete(0, tk.END)
+        """Load quizzes from quizzes.json if it exists."""
+        global QUIZZES
         if os.path.exists('quizzes.json'):
             with open('quizzes.json', 'r') as file:
-                global QUIZZES
                 QUIZZES = json.load(file)
+        else:
+            QUIZZES = []
+
+    def refresh_quiz_listbox(self):
+        """Refresh the quiz listbox to reflect the current in-memory QUIZZES."""
+        self.quiz_listbox.delete(0, tk.END)
         for quiz in QUIZZES:
             self.quiz_listbox.insert(tk.END, quiz['question'])
 
@@ -99,6 +111,7 @@ class QuizManagerApp:
             self.explanation_entry.delete(0, tk.END)
             self.explanation_entry.insert(0, selected_quiz['explanation'])
         except IndexError:
+            # No item selected
             pass
 
     def add_quiz(self):
@@ -109,7 +122,8 @@ class QuizManagerApp:
             "explanation": self.explanation_entry.get().strip()
         }
         QUIZZES.append(new_quiz)
-        self.load_quizzes()
+        # Refresh listbox from in-memory data, do NOT reload from file
+        self.refresh_quiz_listbox()
         messagebox.showinfo("Success", "Quiz added successfully!")
 
     def update_quiz(self):
@@ -121,7 +135,7 @@ class QuizManagerApp:
                 "answer": self.answer_entry.get().strip(),
                 "explanation": self.explanation_entry.get().strip()
             }
-            self.load_quizzes()
+            self.refresh_quiz_listbox()
             messagebox.showinfo("Success", "Quiz updated successfully!")
         except IndexError:
             messagebox.showerror("Error", "No quiz selected for updating.")
@@ -130,19 +144,22 @@ class QuizManagerApp:
         try:
             selected_index = self.quiz_listbox.curselection()[0]
             del QUIZZES[selected_index]
-            self.load_quizzes()
+            self.refresh_quiz_listbox()
             messagebox.showinfo("Success", "Quiz deleted successfully!")
         except IndexError:
             messagebox.showerror("Error", "No quiz selected for deletion.")
 
     def save_quizzes(self):
+        """Write the in-memory QUIZZES to quizzes.json."""
         with open('quizzes.json', 'w') as file:
             json.dump(QUIZZES, file, indent=4)
         messagebox.showinfo("Save Changes", "Quizzes saved successfully!")
 
-    # --- Lessons Manager ---
+    # =========================
+    #    LESSONS MANAGER
+    # =========================
     def create_lessons_manager_widgets(self):
-        # Lesson list
+        # Lesson listbox
         self.lesson_listbox = tk.Listbox(self.lessons_tab, height=15, width=100)
         self.lesson_listbox.grid(row=0, column=0, columnspan=3, pady=10, padx=10)
         self.lesson_listbox.bind('<<ListboxSelect>>', self.display_selected_lesson)
@@ -152,7 +169,7 @@ class QuizManagerApp:
         tk.Button(self.lessons_tab, text="Update Lesson", command=self.update_lesson).grid(row=1, column=1, pady=5)
         tk.Button(self.lessons_tab, text="Save Changes", command=self.save_lessons).grid(row=1, column=2, pady=5)
 
-        # Details area
+        # Lesson details area
         self.lesson_details_frame = tk.Frame(self.lessons_tab)
         self.lesson_details_frame.grid(row=2, column=0, columnspan=3, pady=10)
 
@@ -165,11 +182,17 @@ class QuizManagerApp:
         self.content_text.grid(row=1, column=1, pady=5)
 
     def load_lessons(self):
-        self.lesson_listbox.delete(0, tk.END)
+        """Load lessons from lessons.json if it exists."""
+        global LESSONS
         if os.path.exists('lessons.json'):
             with open('lessons.json', 'r') as file:
-                global LESSONS
                 LESSONS = json.load(file)
+        else:
+            LESSONS = []
+
+    def refresh_lesson_listbox(self):
+        """Refresh the lesson listbox to reflect the current in-memory LESSONS."""
+        self.lesson_listbox.delete(0, tk.END)
         for lesson in LESSONS:
             self.lesson_listbox.insert(tk.END, lesson['title'])
 
@@ -192,7 +215,7 @@ class QuizManagerApp:
             "content": self.content_text.get(1.0, tk.END).strip()
         }
         LESSONS.append(new_lesson)
-        self.load_lessons()
+        self.refresh_lesson_listbox()
         messagebox.showinfo("Success", "Lesson added successfully!")
 
     def update_lesson(self):
@@ -202,18 +225,21 @@ class QuizManagerApp:
                 "title": self.title_entry.get().strip(),
                 "content": self.content_text.get(1.0, tk.END).strip()
             }
-            self.load_lessons()
+            self.refresh_lesson_listbox()
             messagebox.showinfo("Success", "Lesson updated successfully!")
         except IndexError:
             messagebox.showerror("Error", "No lesson selected for updating.")
 
     def save_lessons(self):
+        """Write the in-memory LESSONS to lessons.json."""
         with open('lessons.json', 'w') as file:
             json.dump(LESSONS, file, indent=4)
         messagebox.showinfo("Save Changes", "Lessons saved successfully!")
 
 
-# Run the app
+# =========================
+#     MAIN ENTRY
+# =========================
 if __name__ == "__main__":
     root = tk.Tk()
     app = QuizManagerApp(root)
