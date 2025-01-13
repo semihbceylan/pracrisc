@@ -9,23 +9,23 @@
     },
     {
         "title": "Arithmetic Instructions",
-        "content": "Arithmetic instructions perform mathematical operations on registers.\nExamples:\n- **ADD**: Add two registers (e.g., ADD R1, R2, R3 → R1 = R2 + R3).\n- **SUB**: Subtract one register from another (e.g., SUB R1, R2, R3 → R1 = R2 - R3).\n- **MUL**: Multiply two registers (e.g., MUL R1, R2, R3 → R1 = R2 * R3).\n- **DIV**: Divide one register by another (e.g., DIV R1, R2, R3 → R1 = R2 / R3).\n"
+        "content": "Arithmetic instructions perform mathematical operations on registers.\nExamples:\n- **ADD**: Add two registers (e.g., ADD R1, R2, R3 => R1 = R2 + R3).\n- **SUB**: Subtract one register from another (e.g., SUB R1, R2, R3 => R1 = R2 - R3).\n- **MUL**: Multiply two registers (e.g., MUL R1, R2, R3 => R1 = R2 * R3).\n- **DIV**: Divide one register by another (e.g., DIV R1, R2, R3 => R1 = R2 / R3).\n"
     },
     {
         "title": "Logical Instructions",
-        "content": "Logical instructions perform bitwise operations on registers.\nExamples:\n- **AND**: Bitwise AND (e.g., AND R1, R2, R3 → R1 = R2 & R3).\n- **OR**: Bitwise OR (e.g., OR R1, R2, R3 → R1 = R2 | R3).\n- **XOR**: Bitwise XOR (e.g., XOR R1, R2, R3 → R1 = R2 ^ R3).\n- **NOT**: Bitwise NOT (e.g., NOT R1, R2 → R1 = ~R2).\n"
+        "content": "Logical instructions perform bitwise operations on registers.\nExamples:\n- **AND**: Bitwise AND (e.g., AND R1, R2, R3 => R1 = R2 & R3).\n- **OR**: Bitwise OR (e.g., OR R1, R2, R3 => R1 = R2 | R3).\n- **XOR**: Bitwise XOR (e.g., XOR R1, R2, R3 => R1 = R2 ^ R3).\n- **NOT**: Bitwise NOT (e.g., NOT R1, R2 => R1 = ~R2).\n"
     },
     {
         "title": "Data Transfer Instructions",
-        "content": "Data transfer instructions move data between registers and memory.\nExamples:\n- **LOAD**: Load data from memory into a register (e.g., LOAD R1, 100 → R1 = Memory[100]).\n- **STORE**: Store data from a register into memory (e.g., STORE R1, 100 → Memory[100] = R1).\n"
+        "content": "Data transfer instructions move data between registers and memory.\nExamples:\n- **LOAD**: Load data from memory into a register (e.g., LOAD R1, 100 => R1 = Memory[100]).\n- **STORE**: Store data from a register into memory (e.g., STORE R1, 100 => Memory[100] = R1).\n"
     },
     {
         "title": "Control Instructions",
-        "content": "Control instructions change the flow of execution.\nExamples:\n- **JUMP**: Jump to a specific instruction (e.g., JUMP 8 → Set PC to 8).\n- **BEQ**: Branch if two registers are equal (e.g., BEQ R1, R2, 10 → If R1 == R2, jump to instruction 10).\n- **BNE**: Branch if two registers are not equal (e.g., BNE R1, R2, 10 → If R1 != R2, jump to instruction 10).\n- **HALT**: Stop execution.\n"
+        "content": "Control instructions change the flow of execution.\nExamples:\n- **JUMP**: Jump to a specific instruction (e.g., JUMP 8 => Set PC to 8).\n- **BEQ**: Branch if two registers are equal (e.g., BEQ R1, R2, 10 => If R1 == R2, jump to instruction 10).\n- **BNE**: Branch if two registers are not equal (e.g., BNE R1, R2, 10 => If R1 != R2, jump to instruction 10).\n- **HALT**: Stop execution.\n"
     },
     {
         "title": "Shift Instructions",
-        "content": "\nShift instructions perform bitwise shifts on register values.\nExamples:\n- **SLL**: Shift left logical (e.g., SLL R1, R2, 5 → R1 = R2 << 5).\n- **SRL**: Shift right logical (e.g., SRL R1, R2, 5 → R1 = R2 >> 5).\n"
+        "content": "\nShift instructions perform bitwise shifts on register values.\nExamples:\n- **SLL**: Shift left logical (e.g., SLL R1, R2, 5 => R1 = R2 << 5).\n- **SRL**: Shift right logical (e.g., SRL R1, R2, 5 => R1 = R2 >> 5).\n"
     },
     {
         "title": "Von Neumann Architecture",
